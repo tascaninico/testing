@@ -9,6 +9,6 @@ DOCKER_IMAGE=${DOCKER_IMAGE:-$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG}
 
 # run container
 docker run \
-    --rm -it -w /project -v "$(pwd)/:/project" \
+    --rm -it -w /project/scripts -v "$(pwd):/project"  \
     "${DOCKER_IMAGE}" \
     /bin/bash
