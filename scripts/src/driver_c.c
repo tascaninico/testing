@@ -126,7 +126,7 @@ void print_readings(uint8_t *data) {
 }
 
 int main() {
-    uint8_t data[5]
+    uint8_t data[5];
 
     gpio_export(GPIO_PIN);
 
