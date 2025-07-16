@@ -1,13 +1,16 @@
-#include <stdio.h>
+#include <stdio.h> // #include errors detected. Please update your includePath. 
+                //Squiggles are disabled for this translation unit 
+                //(/home/nick/Projects/testing/scripts/src/driver.c).C/C++(1696)
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
 #include <stdint.h>
+#include "driver.h"
 
-#define GPIO_PIN "60"  // Use a suitable GPIO pin from P8 or P9 headers
-#define GPIO_PATH "/sys/class/gpio"
+// #define GPIO_PIN "60"  // Use a suitable GPIO pin from P8 or P9 headers
+// #define GPIO_PATH "/sys/class/gpio"
 
 // Delay helper: microseconds (us)
 void delayMicroseconds(unsigned int us) {
@@ -125,20 +128,3 @@ void print_readings(uint8_t *data) {
     printf("Temperature: %.1f °C\n", t);
 }
 
-int main() {
-    uint8_t data[5];
-
-    gpio_export(GPIO_PIN);
-
-    while (1) {
-        if (read_sensor_data(data) == 0) {
-            print_readings(data);
-        } else {
-            printf("Failed to read sensor data.\n");
-        }
-
-        sleep(2); // Must wait 2 seconds between readings
-    }
-
-    return 0;
-}
