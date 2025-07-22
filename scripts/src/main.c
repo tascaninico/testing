@@ -1,7 +1,12 @@
 #include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+
 #include "driver.h"
 
-int main(){
+int main() {// #include errors detected. Please update your includePath. 
+                //Squiggles are disabled for this translation unit 
+                //(/home/nick/Projects/testing/scripts/src/driver.c).C/C++(1696)
     uint8_t data[5];
 
     gpio_export(GPIO_PIN);

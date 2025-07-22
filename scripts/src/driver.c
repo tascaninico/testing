@@ -9,11 +9,22 @@
 #include <stdint.h>
 #include "driver.h"
 
+
+static void gpio_direction(const char *pin, const char *direction);
+
+static void gpio_write(const char *pin, int value);
+
+static int gpio_read(const char *pin);
+
+static int wait_level(const char *pin, int level, int timeout_us);
+
+static void delayMicroseconds(unsigned int us);
+
 // #define GPIO_PIN "60"  // Use a suitable GPIO pin from P8 or P9 headers
 // #define GPIO_PATH "/sys/class/gpio"
 
 // Delay helper: microseconds (us)
-void delayMicroseconds(unsigned int us) {
+static void delayMicroseconds(unsigned int us) {
     struct timespec ts;
     ts.tv_sec = us / 1000000;
     ts.tv_nsec = (us % 1000000) * 1000;
@@ -31,7 +42,7 @@ void gpio_export(const char *pin) {
 }
 
 // Set GPIO direction (in or out)
-void gpio_direction(const char *pin, const char *direction) {
+static void gpio_direction(const char *pin, const char *direction) {
     char path[64];
     snprintf(path, sizeof(path), GPIO_PATH "/gpio%s/direction", pin);
     int fd = open(path, O_WRONLY);
@@ -42,7 +53,7 @@ void gpio_direction(const char *pin, const char *direction) {
 }
 
 // Write GPIO value (0 or 1)
-void gpio_write(const char *pin, int value) {
+static void gpio_write(const char *pin, int value) {
     char path[64];
     snprintf(path, sizeof(path), GPIO_PATH "/gpio%s/value", pin);
     int fd = open(path, O_WRONLY);
@@ -53,7 +64,7 @@ void gpio_write(const char *pin, int value) {
 }
 
 // Read GPIO value (returns 0 or 1)
-int gpio_read(const char *pin) {
+static int gpio_read(const char *pin) {
     char path[64], val;
     snprintf(path, sizeof(path), GPIO_PATH "/gpio%s/value", pin);
     int fd = open(path, O_RDONLY);
@@ -66,7 +77,7 @@ int gpio_read(const char *pin) {
 }
 
 // Wait for signal level with timeout (μs). Returns duration or -1 if timeout.
-int wait_level(const char *pin, int level, int timeout_us) {
+static int wait_level(const char *pin, int level, int timeout_us) {
     int count = 0;
     while (gpio_read(pin) != level && count++ < timeout_us) {
         delayMicroseconds(1);

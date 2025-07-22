@@ -64,6 +64,9 @@
     uint32:   UINT32
     int8:     INT8
     bool:     UINT8
+  :includes: 
+    - unistd.h   
+    - stddef.h
 
 # Add -gcov to the plugins list to make sure of the gcov plugin
 # You will need to have gcov and gcovr both installed to make it work.
@@ -92,10 +95,13 @@
   :test: []
   :release: []
 
+  
 :plugins:
   :load_paths:
     - "#{Ceedling.load_path}"
   :enabled:
     - stdout_pretty_tests_report
     - module_generator
+    - gcov
+    - fake_function_framework
 ...
